@@ -1,10 +1,18 @@
 import express, { Application, Request, Response } from 'express';
+import { WeatherApi } from './weatherApi';
 
 const app: Application = express();
 const port = 3000;
 
+require("dotenv").config();
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.get(
+    '/weather',
+    async (req: Request, res: Response): Promise<Response> => res.send(await new WeatherApi().getWeatherData())
+);
 
 app.get(
     '/',
