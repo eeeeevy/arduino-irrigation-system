@@ -1,24 +1,22 @@
 import express, { Application, Request, Response } from 'express';
-import { WeatherApi } from './weatherApi';
 
+const weather = require('./routing/weather');
 const app: Application = express();
-const port = 3000;
 
-require("dotenv").config();
+require('dotenv').config();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get(
-    '/weather',
-    async (req: Request, res: Response): Promise<Response> => res.send(await new WeatherApi().getWeatherData())
-);
+/* routes from routeing/weather.ts */
+app.use('/weather', weather);
 
 app.get(
     '/',
-    async (req: Request, res: Response): Promise<Response> => res.status(200).send({ message: 'Hello World!' })
+    async (req: Request, res: Response): Promise<Response> => res.status(200).send({ message: 'Hello from your Server!' })
 );
 
+const port = process.env.PORT || 3000;
 try {
     app.listen(port, (): void => {
         console.log(`Connected successfully on port ${port}`);
